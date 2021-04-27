@@ -1,5 +1,5 @@
+import statsmodels.api as sm
 from pandas import read_csv, cut, get_dummies, concat, DataFrame
-
 # from pandas_profiling import ProfileReport
 from sklearn.preprocessing import MinMaxScaler
 
@@ -80,6 +80,20 @@ def one_hot_encode(df, colnames):
     return df
 
 
+def get_ols(df, target_col):
+    y = (df[target_col])
+    X = (df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 11]])
+    print(X.head())
+    # X = sm.add_constant(X)
+    model = sm.OLS(y.astype(float), X.astype(float)).fit()
+    # test = [1, 0, 0, 0.0000, 0.71689, 0.54678, 0.53184, 0.27820, 0.12420, 0.62923, 0.62338]
+    df['Pred'] = model.predict(X)
+    df = concat([df, y], axis=1)
+    print(model.summary())
+    print('test')
+    return model
+
+
 if __name__ == '__main__':
     fpath = 'dataset/data.csv'
     df = import_data(fname=fpath)
@@ -87,9 +101,11 @@ if __name__ == '__main__':
     print(list(df.columns))
     df = get_bins(df, col='Age', newcol='age_type', intervals=[0, 18, 30, 60, 200],
                   labels=['young', 'adult', 'mature', 'retired'])
-
     df = normalize_columns(df, colnames=['PCV', 'MCV', 'MCH', 'MCHC', 'RDW', 'TLC', 'PLT/mm3', 'HGB'])
     df = one_hot_encode(df, colnames=['age_type'])
     print(df.head())
+    ols_model = get_ols(df, 'RBC')
+
+    print('test')
 
     print('')
