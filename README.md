@@ -1,4 +1,4 @@
-# Anemia Diagnosis with Statsmodels regression
+# Anemia Diagnosis with Statsmodels Regression
 
 ![Red Blood Cells](header.jpeg)
 
