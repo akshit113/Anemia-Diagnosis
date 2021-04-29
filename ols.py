@@ -98,17 +98,9 @@ def get_ols(df, target_col):
     return model
 
 
-def correlate(df):
-    corrl = df.corr()
-    print(df.columns)
-    print(corrl)
-    print('test')
-
-
 if __name__ == '__main__':
     fpath = 'dataset/data.csv'
     df = import_data(fname=fpath)
-    correlate(df)
     # visualize(df)
     print(list(df.columns))
     # df = get_bins(df, col='Age', newcol='age_type', intervals=[0, 18, 30, 60, 200],
