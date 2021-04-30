@@ -1,6 +1,8 @@
+import numpy as np
 import statsmodels.api as sm
-from pandas import read_csv, cut, get_dummies, concat, DataFrame
+from pandas import read_csv, cut, get_dummies, concat, DataFrame, to_numeric
 # from pandas_profiling import ProfileReport
+from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -31,6 +33,8 @@ def import_data(fname):
     :return: dataframe
     """
     df = read_csv(fname)
+    df = df.dropna()
+    df = df.reset_index(drop=True)
     cols = [x.replace(" ", "") for x in list(df.columns)]
     df.columns = cols
     df.drop(index=0, inplace=True, axis=0)
@@ -80,36 +84,52 @@ def one_hot_encode(df, colnames):
     return df
 
 
-def get_ols(df, target_col):
-    df.dropna(how='any', axis=0, inplace=True)
-    y = (df[target_col])
-    X = (df.iloc[:, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]])
-    print(X.head())
-    # X = sm.add_constant(X)
-    # X = sm.add_constant(X)
-    model = sm.OLS(y.astype(float), X.astype(float)).fit()
-    # test = [1, 0, 0, 0.0000, 0.71689, 0.54678, 0.53184, 0.27820, 0.12420, 0.62923, 0.62338]
-    # test = (X.iloc[:1,:])
-    # test = test.astype(float)
-    df['Pred'] = model.predict(X.astype(float))
-    # df = concat([df, y], axis=1)
+def get_ols(x_train, y_train):
+    model = (sm.OLS(y_train.astype(float), x_train.astype(float))).fit()
     print(model.summary())
     print(model.params)
     return model
 
 
+def make_predictions(model, x_test, y_test):
+    preds = model.predict(x_test.astype(float))
+    combined = concat([x_test, y_test, preds], axis=1, ignore_index=True)
+    preds = preds.values.tolist()
+    return combined, preds
+
+
 if __name__ == '__main__':
     fpath = 'dataset/data.csv'
     df = import_data(fname=fpath)
+    df['RBC'] = to_numeric(df['RBC'])
     # visualize(df)
-    print(list(df.columns))
     # df = get_bins(df, col='Age', newcol='age_type', intervals=[0, 18, 30, 60, 200],
     #               labels=['young', 'adult', 'mature', 'retired'])
     # df = get_bins(df, col='Age', newcol='age_type', intervals=[0, 18, 30, 45, 60, 200],
     #               labels=['young', 'adult', 'mature', 'more matured', 'retired'])
-    df = normalize_columns(df, colnames=['Age', 'PCV', 'MCV', 'MCH', 'MCHC', 'RDW', 'TLC', 'PLT/mm3', 'HGB'])
-    # df = one_hot_encode(df, colnames=['age_type'])
-    print(df.head())
-    ols_model = get_ols(df, 'RBC')
-    print('test')
-    print('')
+    # df = normalize_columns(df, colnames=['Age', 'PCV', 'MCV', 'MCH', 'MCHC', 'RDW', 'TLC', 'PLT/mm3', 'HGB'])
+
+    X = df.iloc[:, :10]
+    Y = df['RBC']
+    shuffle_df = df.sample(frac=1)
+
+    # Define a size for your train set
+    train_size = int(0.8 * len(df))
+
+    # Split your dataset
+    train_set = (shuffle_df[:train_size]).reset_index(drop=True)
+    test_set = (shuffle_df[train_size:]).reset_index(drop=True)
+    x_train, y_train = train_set.iloc[:, :10], train_set['RBC']
+    x_test, y_test = test_set.iloc[:, :10], test_set['RBC']
+    ols_model = get_ols(x_train, y_train)
+    df, preds = make_predictions(ols_model, x_test, y_test)
+
+    ls = [float(val) for val in y_test]
+    r2 = r2_score(ls, preds)
+    mse = mean_squared_error(ls, preds)
+
+    print(f'r2 score is {r2}')
+    print(f'mse is {mse}')
+    print('program execution complete')
+
+
