@@ -92,7 +92,7 @@ def get_ols(x_train, y_train):
 
 
 def make_predictions(model, x_test, y_test):
-    preds = model.predict(x_test.astype(float))
+    preds = DataFrame(model.predict(x_test.astype(float)))
     combined = concat([x_test, y_test, preds], axis=1, ignore_index=True)
     preds = preds.values.tolist()
     return combined, preds
