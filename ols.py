@@ -1,8 +1,8 @@
-import numpy as np
 import statsmodels.api as sm
 from pandas import read_csv, cut, get_dummies, concat, DataFrame, to_numeric
 # from pandas_profiling import ProfileReport
 from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
 
@@ -111,16 +111,8 @@ if __name__ == '__main__':
 
     X = df.iloc[:, :10]
     Y = df['RBC']
-    shuffle_df = df.sample(frac=1)
 
-    # Define a size for your train set
-    train_size = int(0.8 * len(df))
-
-    # Split your dataset
-    train_set = (shuffle_df[:train_size]).reset_index(drop=True)
-    test_set = (shuffle_df[train_size:]).reset_index(drop=True)
-    x_train, y_train = train_set.iloc[:, :10], train_set['RBC']
-    x_test, y_test = test_set.iloc[:, :10], test_set['RBC']
+    x_train, x_test, y_train, y_test = train_test_split(X, Y, test_size=0.2, train_size=0.8)
     ols_model = get_ols(x_train, y_train)
     df, preds = make_predictions(ols_model, x_test, y_test)
 
@@ -131,5 +123,3 @@ if __name__ == '__main__':
     print(f'r2 score is {r2}')
     print(f'mse is {mse}')
     print('program execution complete')
-
-
