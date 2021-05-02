@@ -1,4 +1,4 @@
-# Anemia Diagnosis with Statsmodels Regression
+# Anemia Diagnosis with Statsmodels and Scikit-learn Regression
 
 ![Red Blood Cells](header.jpeg)
 
