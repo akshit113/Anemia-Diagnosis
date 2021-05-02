@@ -40,15 +40,16 @@ if __name__ == '__main__':
     plt.title('RBC Count Prediction')
     # plt.plot(y_test)
 
-    p2 = plt.plot(df['Predicted'], linestyle='--', marker='o', label='Predicted RBC')
+    p2 = plt.plot(df['Predicted'], linestyle='--', marker='o', label='Predicted RBC',color='green')
 
     from matplotlib.font_manager import FontProperties
 
     fontP = FontProperties()
     fontP.set_size(size='small')
-    p1, = plt.plot(y_test, label='Actual RBC')
+    p1, = plt.plot(y_test, label='Actual RBC',color='g')
     p2, = plt.plot(ls, label='Predicted RBC')
     plt.legend(handles=[p1, p2], title='RBC', bbox_to_anchor=(0.5, 0., 0.5, 0.5), loc='best')
+
     plt.xlabel('Observations')
     plt.ylabel('RBC Count')
     plt.grid()
