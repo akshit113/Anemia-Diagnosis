@@ -14,6 +14,9 @@ https://www.kaggle.com/saurabhshahane/anemia-diagnosis-dataset
 
 ## Results
 ![OLS](OLS%20Regression%20Results.png)
+  
+![Regression Plot](plot.png)
+
 ## Acknowledgements
 Vohra, Rajan; pahareeya, jankisharan; Hussain, Abir (2021), “Complete Blood Count Anemia Diagnosis”, Mendeley Data, V1, doi: 10.17632/dy9mfjchm7.1
 

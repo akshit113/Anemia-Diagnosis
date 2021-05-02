@@ -95,6 +95,7 @@ def make_predictions(model, x_test, y_test):
     preds = DataFrame(model.predict(x_test.astype(float)))
     combined = concat([x_test, y_test, preds], axis=1, ignore_index=True)
     preds = preds.values.tolist()
+    combined.columns = ['Age', 'Sex', 'PCV', 'MCV', 'MCH', 'MCHC', 'RDW', 'TLC', 'PLT/mm3', 'HGB', 'RBC', 'Predicted']
     return combined, preds
 
 
