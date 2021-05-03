@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from pandas import to_numeric
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score, mean_squared_error
-
+import pickle
 from ols import import_data, make_predictions
 
 
@@ -16,7 +16,9 @@ def get_model(x_train, y_train):
 if __name__ == '__main__':
     fpath = 'dataset/data.csv'
     df = import_data(fname=fpath)
+
     df['RBC'] = to_numeric(df['RBC'])
+    print(list(df.columns))
     # visualize(df)
     X = df.iloc[:, :10]
     Y = df['RBC']
@@ -56,6 +58,8 @@ if __name__ == '__main__':
     plt.show()
     # plt.savefig('plot.png')
 
+    filename = 'linreg.pkl'
+    pickle.dump(regressor, open(filename, 'wb'))
     print(f'r2 score is {r2}')
     print(f'mse is {mse}')
     print('program execution complete')
