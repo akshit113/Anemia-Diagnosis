@@ -78,7 +78,7 @@ def main():
     st.title("Diagnosis Anemia with Predicting RBC levels")
     html_temp = """
     <div style="background-color:red;padding:10px">
-    <h2 style="color:white;text-align:center;">Streamlit Predict RBC Machine learning App </h2>
+    <h2 style="color:white;text-align:center;">Streamlit Predict RBC Machine lear App </h2>
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
