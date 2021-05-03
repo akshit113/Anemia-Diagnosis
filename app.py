@@ -77,8 +77,8 @@ def predict_rbc(age, sex, pcv, mcv, mch, mchc, rdw, tlc, plt, hgb):
 def main():
     st.title("Diagnosis Anemia with Predicting RBC levels")
     html_temp = """
-    <div style="background-color:tomato;padding:10px">
-    <h2 style="color:white;text-align:center;">Streamlit Predict RBC ML App </h2>
+    <div style="background-color:red;padding:10px">
+    <h2 style="color:white;text-align:center;">Streamlit Predict RBC Machine learning App </h2>
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
@@ -92,10 +92,9 @@ def main():
     tlc = st.text_input("TLC")
     plt = st.text_input("PLT")
     hgb = st.text_input("HGB")
-    result = ""
     if st.button("Predict"):
         result = predict_rbc(age, sex, pcv, mcv, mch, mchc, rdw, tlc, plt, hgb)[0]
-    st.success('RBC is {}'.format(result))
+        st.success('RBC is {}'.format(result))
     # if st.button("About"):
     #     st.text("Lets LEarn")
     #     st.text("Built with Streamlit")
