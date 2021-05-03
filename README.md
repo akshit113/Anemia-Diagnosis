@@ -22,6 +22,13 @@ https://share.streamlit.io/akshit113/anemia-diagnosis/main/app.py
 ## Front-end/User Interface
 ![UI](ui.png)
 
+##   Docker Fix  
+Run these commands in terminal where you're building the docker container:
+```python
+export DOCKER_BUILDKIT=0
+export COMPOSE_DOCKER_CLI_BUILD=0
+```
+
 ## Acknowledgements
 Vohra, Rajan; pahareeya, jankisharan; Hussain, Abir (2021), “Complete Blood Count Anemia Diagnosis”, Mendeley Data, V1, doi: 10.17632/dy9mfjchm7.1
 
